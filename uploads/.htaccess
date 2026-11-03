@@ -1,0 +1,11 @@
+# Uploaded files are served as images only; nothing here may run as code.
+Options -Indexes
+<FilesMatch ".*">
+  Require all denied
+</FilesMatch>
+<FilesMatch "\.(png|jpe?g|webp)$">
+  Require all granted
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options nosniff
+</IfModule>

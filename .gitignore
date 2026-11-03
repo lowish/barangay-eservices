@@ -1,0 +1,12 @@
+# Local configuration holds the database and SMTP passwords - never commit it
+config/config.php
+
+# Generated email copies (contain verification links)
+storage/mail/*.html
+
+# Editor / tool folders
+.claude/
+.vscode/
+.idea/
+dist/
+uploads/logo/logo-*

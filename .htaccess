@@ -1,0 +1,6 @@
+# Apache (XAMPP) settings
+Options -Indexes
+DirectoryIndex index.php
+<FilesMatch "\.(sql|md|txt|sample\.php)$">
+  Require all denied
+</FilesMatch>
