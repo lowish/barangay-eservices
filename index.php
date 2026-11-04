@@ -16,7 +16,7 @@ require APP_ROOT . '/app/views/header.php';
   <div>
     <div class="landing-id">
       <?= render_seal('landing-seal') ?>
-      <div><strong><?= e(barangay_name()) ?></strong><span><?= e(barangay_location()) ?></span></div>
+      <div><strong><?= e(barangay_display_name()) ?></strong><?php if (barangay_location() !== ''): ?><span><?= e(barangay_location()) ?></span><?php endif; ?></div>
     </div>
     <h1>Request barangay documents and report community concerns online</h1>
     <p class="lead">Check what you need before going to the barangay hall, send your document request ahead, and follow its status from your phone. You can also report problems in your purok, such as uncollected garbage, damaged roads or broken streetlights, and see when they are acted on.</p>
@@ -28,9 +28,9 @@ require APP_ROOT . '/app/views/header.php';
   <aside class="hall-card" aria-label="Barangay hall information">
     <h2>Barangay hall</h2>
     <dl class="details mb-3">
-      <dt>Barangay</dt><dd><?= e(barangay_name()) ?></dd>
-      <dt>Location</dt><dd><?= e(barangay_location()) ?></dd>
-      <dt>Office hours</dt><dd><?= e(barangay()['office_hours']) ?></dd>
+      <?php if (barangay_name() !== ''): ?><dt>Barangay</dt><dd><?= e(barangay_name()) ?></dd><?php endif; ?>
+      <?php if (barangay_location() !== ''): ?><dt>Location</dt><dd><?= e(barangay_location()) ?></dd><?php endif; ?>
+      <dt>Office hours</dt><dd><?= e(office_hours() ?: 'Please ask at the barangay hall.') ?></dd>
     </dl>
     <p class="text-muted small mb-0">Documents are released and paid for at the barangay hall during office hours. For fires, crimes and medical emergencies, call 911.</p>
   </aside>

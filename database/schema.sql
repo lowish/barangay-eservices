@@ -45,14 +45,15 @@ CREATE TABLE users (
   INDEX idx_users_role (role_id)
 ) ENGINE=InnoDB;
 
--- Profile of the one barangay this installation serves, edited by the administrator.
+-- Optional profile of the barangay this installation serves, edited by the administrator.
+-- Empty by default: the system is a general "Barangay E-Services" system.
 -- Exactly one row (settings_id = 1); the CHECK keeps a second row from being added.
 CREATE TABLE barangay_settings (
   settings_id   TINYINT UNSIGNED PRIMARY KEY DEFAULT 1,
-  barangay_name VARCHAR(100) NOT NULL,          -- without the word "Barangay", e.g. "San Isidro"
-  municipality  VARCHAR(100) NOT NULL,          -- city or municipality
-  province      VARCHAR(100) NOT NULL,
-  office_hours  VARCHAR(150) NOT NULL,
+  barangay_name VARCHAR(100) NULL,              -- without the word "Barangay"; NULL = not set
+  municipality  VARCHAR(100) NULL,              -- city or municipality
+  province      VARCHAR(100) NULL,
+  office_hours  VARCHAR(150) NULL,
   logo_path     VARCHAR(255) NULL,              -- file in uploads/logo/, NULL = show initials
   updated_by    INT UNSIGNED NULL,
   updated_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -199,9 +200,8 @@ CREATE TABLE activity_logs (
   INDEX idx_log_action (action)
 ) ENGINE=InnoDB;
 
--- Placeholder profile; the administrator replaces it under Settings.
-INSERT INTO barangay_settings (settings_id, barangay_name, municipality, province, office_hours)
-VALUES (1, 'Your Barangay', 'Your City or Municipality', 'Your Province', 'Monday to Friday, 8:00 AM to 5:00 PM');
+-- Empty profile; the administrator may fill it in under Settings.
+INSERT INTO barangay_settings (settings_id, office_hours) VALUES (1, 'Monday to Friday, 8:00 AM to 5:00 PM');
 
 INSERT INTO roles (role_id, role_key, role_name) VALUES
   (1, 'admin', 'Administrator'),

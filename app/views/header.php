@@ -107,10 +107,10 @@ $flashes = take_flashes();
   <aside class="sidebar offcanvas-lg offcanvas-start" id="sidebar" tabindex="-1" aria-label="Main navigation">
     <div class="sidebar-brand">
       <a class="brand" href="<?= e(url(home_path_for_role($role))) ?>">
-        <?= render_seal() ?>
+        <?= render_app_mark() ?>
         <span class="brand-text">
-          <span class="brand-name" title="<?= e(barangay_name()) ?>"><?= e(barangay_name()) ?></span>
-          <span class="brand-sub"><?= e(barangay_location()) ?></span>
+          <span class="brand-name"><?= e(app_name()) ?></span>
+          <span class="brand-sub">Online barangay services</span>
         </span>
       </a>
       <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close menu"></button>
@@ -159,10 +159,10 @@ $flashes = take_flashes();
   <nav class="navbar navbar-expand-md navbar-dark" aria-label="Main">
     <div class="container-xl">
       <a class="brand" href="<?= e(url('index.php')) ?>">
-        <?= render_seal() ?>
+        <?= render_app_mark() ?>
         <span class="brand-text">
-          <span class="brand-name" title="<?= e(barangay_name()) ?>"><?= e(barangay_name()) ?></span>
-          <span class="brand-sub">E-Services</span>
+          <span class="brand-name"><?= e(app_name()) ?></span>
+          <span class="brand-sub">Online barangay services</span>
         </span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">

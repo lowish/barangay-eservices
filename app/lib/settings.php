@@ -1,14 +1,17 @@
 <?php
 /**
- * Barangay profile (name, location, office hours, logo).
- * Stored in the single-row barangay_settings table and edited by the administrator
- * under Settings, so nothing about the barangay is hardcoded in the pages.
+ * The system is a general "Barangay E-Services" system. The header, footer, page titles and
+ * emails always use that name. The administrator may optionally enter the barangay profile
+ * (name, location, office hours, logo) under Settings; when filled in, it is shown inside pages
+ * such as the dashboard banner, the landing page and printed reports. Nothing is hardcoded.
  */
 
+const APP_NAME = 'Barangay E-Services';
+
 const SETTINGS_DEFAULTS = [
-    'barangay_name' => 'Your Barangay',
-    'municipality'  => 'Your City or Municipality',
-    'province'      => 'Your Province',
+    'barangay_name' => null,
+    'municipality'  => null,
+    'province'      => null,
     'office_hours'  => 'Monday to Friday, 8:00 AM to 5:00 PM',
     'logo_path'     => null,
 ];
@@ -34,28 +37,50 @@ function barangay(bool $refresh = false): array
     return $settings;
 }
 
-/** Full display name, e.g. "Barangay San Isidro". A name already starting with Barangay/Brgy is kept as typed. */
+/** The system name used in the header, footer, page titles and emails. */
+function app_name(): string
+{
+    return APP_NAME;
+}
+
+/**
+ * Configured barangay name, e.g. "Barangay Poblacion" for "Poblacion"; empty when not set.
+ * A name already starting with Barangay/Brgy is kept as typed.
+ */
 function barangay_name(): string
 {
     $name = trim((string) barangay()['barangay_name']);
+    if ($name === '') {
+        return '';
+    }
     return preg_match('/^(barangay|brgy\.?)\s/i', $name) ? $name : 'Barangay ' . $name;
 }
 
-/** "City or Municipality, Province" */
+/** The configured barangay name, or the system name when no barangay is set. */
+function barangay_display_name(): string
+{
+    return barangay_name() ?: APP_NAME;
+}
+
+/** "City or Municipality, Province" from the parts that are filled in; empty when none are. */
 function barangay_location(): string
 {
     $b = barangay();
-    return trim($b['municipality'] . ', ' . $b['province'], ', ');
+    return implode(', ', array_filter([trim((string) $b['municipality']), trim((string) $b['province'])], 'strlen'));
 }
 
-function app_name(): string
+/** Configured office hours, or empty. */
+function office_hours(): string
 {
-    return barangay_name() . ' E-Services';
+    return trim((string) barangay()['office_hours']);
 }
 
-/** Up to two initials for the seal when no logo is uploaded, e.g. "San Isidro" -> "SI". */
+/** Up to two initials for the seal when no logo is uploaded, e.g. "Poblacion Norte" -> "PN"; "BE" when no name is set. */
 function barangay_initials(): string
 {
+    if (trim((string) barangay()['barangay_name']) === '') {
+        return 'BE';
+    }
     $name = preg_replace('/^(barangay|brgy\.?)\s+/i', '', trim((string) barangay()['barangay_name']));
     $words = preg_split('/[\s\-]+/u', $name, -1, PREG_SPLIT_NO_EMPTY);
     $words = array_values(array_filter($words, fn ($w) => !in_array(mb_strtolower($w), ['de', 'del', 'dela', 'la', 'ng', 'of'], true)));
@@ -77,7 +102,13 @@ function logo_url(): ?string
     return url($path) . '?v=' . filemtime(APP_ROOT . '/' . $path);
 }
 
-/** Navbar / header seal: the logo image, or the initials in a circle. */
+/** Generic mark for the header (the same for every barangay). */
+function render_app_mark(): string
+{
+    return '<span class="brand-seal" aria-hidden="true">BE</span>';
+}
+
+/** Barangay seal inside pages: the uploaded logo, or the initials in a circle. */
 function render_seal(string $class = 'brand-seal'): string
 {
     $logo = logo_url();

@@ -64,11 +64,11 @@ function send_mail(string $toEmail, string $toName, string $subject, string $htm
 
 function mail_layout(string $title, string $body): string
 {
-    $brgy = e(barangay_name());
+    $brgy = e(app_name());
     return '<!doctype html><html><body style="margin:0;background:#f3f5f8;font-family:Arial,Helvetica,sans-serif;color:#1b2433">'
         . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px">'
         . '<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border:1px solid #dde1e7">'
-        . '<tr><td style="background:#8f1d21;color:#ffffff;padding:16px 24px;font-size:16px;font-weight:bold">' . $brgy . ' E-Services</td></tr>'
+        . '<tr><td style="background:#8f1d21;color:#ffffff;padding:16px 24px;font-size:16px;font-weight:bold">' . $brgy . '</td></tr>'
         . '<tr><td style="padding:24px;font-size:15px;line-height:1.55">' . $body . '</td></tr>'
         . '<tr><td style="padding:16px 24px;border-top:1px solid #dde1e7;font-size:12px;color:#5b6575">This is an automated message from ' . $brgy . '. Please do not reply.</td></tr>'
         . '</table></td></tr></table></body></html>';

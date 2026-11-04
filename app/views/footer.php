@@ -2,8 +2,8 @@
 </main>
 <footer class="<?= $appLayout ? 'app-footer' : 'site-footer' ?>">
   <div class="<?= $appLayout ? 'app-footer-inner' : 'container-xl' ?>">
-    <span><strong><?= e(barangay_name()) ?></strong>, <?= e(barangay_location()) ?></span>
-    <span>Barangay hall office hours: <?= e(barangay()['office_hours']) ?></span>
+    <span><strong><?= e(app_name()) ?></strong></span>
+    <span>Document requests and community concern reporting</span>
   </div>
 </footer>
 <?php if ($appLayout): ?>

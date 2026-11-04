@@ -1,6 +1,6 @@
 # Barangay E-Services and Community Concern Management System
 
-A web system for a single barangay. The administrator sets the barangay's name, city or municipality, province, logo and office hours under **Settings**, and those details appear in the navigation bar, dashboards, footer, emails and printed reports. The sample data is configured as Barangay San Isidro, Sta. Maria, Laguna; change it in Settings. Residents check document requirements, request documents and report community concerns online, then follow each one's status. Barangay staff review, process and resolve them; the administrator manages accounts, reference data, reports and activity logs.
+A general barangay system named **Barangay E-Services**; it is not tied to any specific barangay. The header, footer, page titles and emails always show "Barangay E-Services". Optionally, the administrator can enter the barangay's name, city or municipality, province, logo and office hours under **Settings**; when filled in, they appear on the dashboards, the public landing page and printed reports. Residents check document requirements, request documents and report community concerns online, then follow each one's status. Barangay staff review, process and resolve them; the administrator manages accounts, reference data, reports and activity logs.
 
 Built with PHP 8, MySQL/MariaDB through MySQLi (prepared statements only), HTML, CSS, JavaScript and Bootstrap 5.3.
 
@@ -16,7 +16,7 @@ Built with PHP 8, MySQL/MariaDB through MySQLi (prepared statements only), HTML,
    - `db`: leave as is for a default XAMPP install (user `root`, empty password).
    - `mail`: your SMTP settings (see below).
 5. Open http://localhost/Barangay-EServices/ and sign in with an account from `DEMO_CREDENTIALS.txt`.
-6. Sign in as the administrator, open **Settings**, and enter your barangay's name, city or municipality, province, office hours and logo.
+6. Optional: sign in as the administrator, open **Settings**, and enter your barangay's name, city or municipality, province, office hours and logo.
 
 The app detects its own folder name, so it also works if the folder is renamed.
 
@@ -47,9 +47,9 @@ If the presentation machine has no internet, set `'transport' => 'log'`: each em
 
 ## Screens
 
-- **Landing page** (`index.php`, public): barangay details from Settings, available documents with fees, how to request a document, how to report a concern, Register / Sign in. Requirements (`services.php`) are public; submitting a request or concern needs a verified resident account. A visitor who clicks "Sign in to request" is returned to the request form after signing in.
+- **Landing page** (`index.php`, public): the barangay details from Settings when set, available documents with fees, how to request a document, how to report a concern, Register / Sign in. Requirements (`services.php`) are public; submitting a request or concern needs a verified resident account. A visitor who clicks "Sign in to request" is returned to the request form after signing in.
 - **Signed-in layout**: dark red sidebar grouped by role, top header with breadcrumb and the user, white content panels. On phones the sidebar becomes a slide-out menu. Staff see counts of waiting requests and queue items beside the menu items.
-- **Dashboards**: barangay banner with greeting, date and office hours; summary figures; "waiting" cards; recent requests and concerns; a monthly activity chart (server-drawn SVG with hover details and a "Show as table" view).
+- **Dashboards**: banner with the barangay name (or "Barangay E-Services" when none is set), greeting, date and office hours; summary figures; "waiting" cards; recent requests and concerns; a monthly activity chart (server-drawn SVG with hover details and a "Show as table" view).
 - **Residents** (`residents.php`, staff and admin): resident directory with search and purok/verification filters, and links to each resident's requests and concerns.
 
 The sidebar only lists pages the role may open, and every page still checks the role on the server.
@@ -60,7 +60,7 @@ The sidebar only lists pages the role may open, and every page still checks the 
 |---|---|
 | Resident | Register, verify email, view requirements, request documents (edit or cancel while Pending), report concerns (edit or withdraw while Submitted), track status, close resolved concerns |
 | Barangay Official / Staff | Review, approve/reject and release requests; review, prioritize, assign, work on and resolve concerns; triage queue; resident directory (read-only); reports; archive finished records |
-| Administrator | Barangay settings (name, location, logo, office hours); manage user accounts, document types and requirements, concern categories; view all records; restore archived records; reports; activity logs |
+| Administrator | Optional barangay profile in Settings (name, location, logo, office hours); manage user accounts, document types and requirements, concern categories; view all records; restore archived records; reports; activity logs |
 
 Every page checks the role on the server (`require_role()` in `app/lib/auth.php`). Residents can only load their own records: the list queries filter by `resident_id`, and opening another resident's record by id returns "Record not found" and is logged.
 
@@ -85,7 +85,7 @@ Associative arrays (hash maps) are also used for O(1) grouping: requirements by 
 
 ## Database
 
-`database/schema.sql` (structure) and `database/barangay_eservices.sql` (structure + sample data). Tables: `roles`, `puroks`, `users`, `barangay_settings` (one row: the barangay profile), `email_verifications`, `document_types`, `document_requirements`, `document_requests`, `request_status_history`, `concern_categories`, `concerns`, `concern_updates`, `activity_logs`. All tables use InnoDB with primary keys, foreign keys, unique keys and CHECK constraints. Requirements are a separate table (one row per requirement) instead of a list column. `fee_amount` on a request stores the fee at the time of the request, so later fee changes do not alter past records.
+`database/schema.sql` (structure) and `database/barangay_eservices.sql` (structure + sample data). Tables: `roles`, `puroks`, `users`, `barangay_settings` (one row: the optional barangay profile), `email_verifications`, `document_types`, `document_requirements`, `document_requests`, `request_status_history`, `concern_categories`, `concerns`, `concern_updates`, `activity_logs`. All tables use InnoDB with primary keys, foreign keys, unique keys and CHECK constraints. Requirements are a separate table (one row per requirement) instead of a list column. `fee_amount` on a request stores the fee at the time of the request, so later fee changes do not alter past records.
 
 ## Security
 

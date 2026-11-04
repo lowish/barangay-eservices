@@ -57,7 +57,7 @@ require APP_ROOT . '/app/views/header.php';
   <div class="page-head">
     <div>
       <h1>Create a resident account</h1>
-      <p>For residents of <?= e(barangay_name()) ?>. You will need to confirm your email address before you can submit requests or report concerns.</p>
+      <p>For residents of <?= e(barangay_name() ?: 'the barangay') ?>. You will need to confirm your email address before you can submit requests or report concerns.</p>
     </div>
   </div>
   <form method="post" class="panel" novalidate>

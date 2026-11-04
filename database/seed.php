@@ -49,11 +49,8 @@ $staffB = add_user(ROLE_STAFF, 'Liza', 'Santos', 'staff2@barangayservice.com', 3
 $staffC = add_user(ROLE_STAFF, 'Eduardo', 'Ramos', 'staff3@barangayservice.com', 5, 'Barangay Hall, Rizal St.', '09171110004', $long, $long, $hash);
 $staff = [$staffA, $staffB, $staffC];
 
-// Sample barangay profile. The administrator can change all of this under Settings.
-db_exec(
-    'UPDATE barangay_settings SET barangay_name = ?, municipality = ?, province = ?, office_hours = ?, logo_path = NULL, updated_by = ? WHERE settings_id = 1',
-    ['San Isidro', 'Sta. Maria', 'Laguna', 'Monday to Friday, 8:00 AM to 5:00 PM', $admin]
-);
+// No barangay profile is set: the system starts as a general "Barangay E-Services" system.
+// The administrator can enter the barangay name, location, office hours and logo under Settings.
 foreach (glob(APP_ROOT . '/uploads/logo/logo-*') ?: [] as $oldLogo) {
     unlink($oldLogo); // start without an uploaded logo
 }
@@ -185,7 +182,7 @@ db_exec("UPDATE document_requests SET is_archived = 1 WHERE status = 'Released' 
 $concernPlan = [
     // [category index, purok, title, location, description, final status, days ago, priority override]
     [0, 2, 'Garbage not collected for a week', 'Beside the basketball court, Mabini St.', 'Garbage bags have piled up beside the court since last Monday. Dogs are tearing them open and the smell reaches the houses nearby.', 'Submitted', 7, null],
-    [2, 1, 'Streetlight not working near the chapel', 'In front of San Isidro Chapel, Rizal St.', 'The streetlight in front of the chapel has been off for two weeks. The street is very dark at night and residents walking home from the terminal feel unsafe.', 'Submitted', 1, null],
+    [2, 1, 'Streetlight not working near the chapel', 'In front of the barangay chapel, Rizal St.', 'The streetlight in front of the chapel has been off for two weeks. The street is very dark at night and residents walking home from the terminal feel unsafe.', 'Submitted', 1, null],
     [4, 4, 'Leaning electric post after the storm', 'Corner of Luna St. and Del Pilar St.', 'An electric post is leaning toward the road after last night\'s strong winds. Wires are sagging low over the street where children pass on the way to school.', 'Submitted', 0, null],
     [1, 3, 'Deep pothole on Bonifacio St.', 'Near house no. 20, Bonifacio St.', 'There is a large pothole in the middle of the road that fills with water when it rains. Two tricycles have already had flat tires.', 'Under Review', 5, null],
     [3, 5, 'Clogged canal causes flooding', 'Canal behind Del Pilar Elementary School', 'The canal is full of plastic and silt. Even light rain floods the street in front of the school up to the ankles.', 'Under Review', 2, 3],

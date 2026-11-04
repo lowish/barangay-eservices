@@ -129,7 +129,7 @@ require APP_ROOT . '/app/views/header.php';
 </form>
 
 <div class="report-head">
-  <div class="print-only"><strong><?= e(barangay_name()) ?></strong>, <?= e(barangay_location()) ?></div>
+  <div class="print-only"><strong><?= e(barangay_display_name()) ?></strong><?= barangay_location() !== '' ? ', ' . e(barangay_location()) : '' ?></div>
   <h2 class="mb-1"><?= e($title) ?></h2>
   <p class="text-muted mb-2">
     <?= e(format_date($from)) ?> to <?= e(format_date($to)) ?><?= $filterText ? '. ' . e(implode('; ', $filterText)) : '' ?>.
